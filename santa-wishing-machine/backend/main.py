@@ -39,7 +39,7 @@ Well now, let me see... Ah, yes! {details.name}! I've been looking at my list.
       
 I see you've been doing some wonderful things, like: {details.niceItems or 'being a good child'}. That's what I like to see!
       
-Now, I also see a few things we might need to work on, like: {details.naughtyItems or 'nothing at all! You\\'ve been perfect'}. But don't worry, I know you'll try harder next year!
+Now, I also see a few things we might need to work on, like:  But don't worry, I know you'll try harder next year!
       
 And about those gifts... I see you're wishing for {details.gifts}. Well, the elves and I will see what we can do! 
       

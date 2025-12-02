@@ -1,16 +1,16 @@
 # Santa Wishing Machine
 
-A personalized video message generator from Santa, built with a Flutter frontend and a Python (FastAPI) backend.
+A personalized video message generator from Santa, built with a React frontend and a Python (FastAPI) backend.
 
 ## Structure
 
 - `backend/`: Python FastAPI backend that handles transcript generation and API logic.
-- `frontend/`: Flutter frontend application for iOS, Android, and Web.
+- `frontend/`: React frontend (Vite) for Web.
 
 ## Prerequisites
 
 - Python 3.8+
-- Flutter SDK
+- Node.js & npm
 - (Optional) Virtualenv
 
 ## Getting Started
@@ -36,7 +36,7 @@ A personalized video message generator from Santa, built with a Flutter frontend
     ```
     The backend will be available at `http://localhost:8000`.
 
-### Frontend (Flutter)
+### Frontend (React)
 
 1.  Navigate to the frontend directory:
     ```bash
@@ -44,13 +44,13 @@ A personalized video message generator from Santa, built with a Flutter frontend
     ```
 2.  Install dependencies:
     ```bash
-    flutter pub get
+    npm install
     ```
 3.  Run the application:
     ```bash
-    flutter run
+    npm run dev
     ```
-    Ensure you have a simulator running or a device connected.
+    The frontend will be available at `http://localhost:5173`.
 
 ## Testing
 
@@ -66,7 +66,4 @@ curl -X POST http://localhost:8000/generate-transcript \
 
 ### Frontend
 
-Run Flutter tests (if any are added):
-```bash
-flutter test
-```
+The frontend should connect to the backend automatically via the Vite proxy.
