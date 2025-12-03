@@ -9,6 +9,8 @@ function App() {
   const [transcript, setTranscript] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [videoUri, setVideoUri] = useState('')
+  const [videoLoading, setVideoLoading] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   const images = ['/santa1.png', '/santa2.png', '/santa3.png']
@@ -50,6 +52,27 @@ function App() {
 
       const data = await response.json()
       setTranscript(data.transcript)
+
+      // Start video generation in parallel
+      setVideoLoading(true)
+      fetch('/api/generate-video', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: "Santa Claus in a joyous mood, background with elves packing gifts, cinematic style, high quality, 4k"
+        }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.video_uri) {
+            setVideoUri(data.video_uri)
+          }
+        })
+        .catch(err => console.error("Video generation failed:", err))
+        .finally(() => setVideoLoading(false))
+
     } catch (err) {
       setError(err.message || 'An error occurred. Please try again.')
     } finally {
@@ -125,20 +148,42 @@ function App() {
           <div className="full-screen-video">
             <div className="video-container">
               <div className="video-player">
-                {images.map((img, index) => (
-                  <img
-                    key={img}
-                    src={img}
-                    alt="Santa"
-                    className={`santa-image ${index === currentImageIndex ? 'active' : ''}`}
-                  />
-                ))}
+                  {videoUri ? (
+                    <video
+                      src={videoUri}
+                      controls
+                      autoPlay
+                      loop
+                      className="santa-video"
+                    />
+                  ) : (
+                    <div className="video-placeholder">
+                      {videoLoading ? (
+                        <div className="loading-state">
+                          <div className="spinner"></div>
+                          <p>Generating magical video from the North Pole... (this may take a minute)</p>
+                        </div>
+                      ) : (
+                        images.map((img, index) => (
+                          <img
+                            key={img}
+                            src={img}
+                            alt="Santa"
+                            className={`santa-image ${index === currentImageIndex ? 'active' : ''}`}
+                          />
+                        ))
+                      )}
+                    </div>
+                  )}
                 <div className="transcript-overlay">
                   <p>{transcript}</p>
                 </div>
               </div>
             </div>
-            <button className="back-button" onClick={() => setTranscript('')}>
+              <button className="back-button" onClick={() => {
+                setTranscript('')
+                setVideoUri('')
+              }}>
               Create Another Message
             </button>
           </div>
